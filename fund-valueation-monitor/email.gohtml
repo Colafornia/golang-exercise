@@ -1,0 +1,35 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body>
+    <div id="container">
+        <p>基金涨跌监控:</p>
+        <div id="content">
+            <table border="1" cellspacing="0" cellpadding="0">
+                <thead>
+                    <tr>
+                        <th align="center">基金名称</th>
+                        <th align="center">估算涨幅</th>
+                        <th align="center">当前估算净值</th>
+                        <th align="center">近十个交易日最低净值</th>
+                        <th align="center">估算时间</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td align="center">{{.Name}}</td>
+                        <td align="center">{{.Rate}}</td>
+                        <td align="center">{{.CurrentVal}}</td>
+                        <td align="center">{{.MinInHistory}}</td>
+                        <td align="center">{{.Time}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+</body>
+</html>
