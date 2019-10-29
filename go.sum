@@ -1,0 +1,8 @@
+github.com/Colafornia/golang-exercise v0.0.0-20191029071451-ea959e46e253 h1:Iwlpan58WlDVujmMko1X5Z/Shat1jZRsN05kjCxJxXQ=
+github.com/Colafornia/golang-exercise v0.0.0-20191029093216-bfb3948865e0 h1:+ErhBs7ifDlb5bowHvPH8kfp2rHYKI4Ggwu1psGTgjE=
+github.com/Colafornia/golang-exercise v0.0.0-20191029093216-bfb3948865e0/go.mod h1:m8Vv4i5GF6LZ9+j1DFf18jykwI+6wIWG5vpTDXMynFo=
+github.com/go-yaml/yaml v2.1.0+incompatible h1:RYi2hDdss1u4YE7GwixGzWwVo47T8UQwnTLB6vQiq+o=
+github.com/go-yaml/yaml v2.1.0+incompatible/go.mod h1:w2MrLa16VYP0jy6N7M5kHaCkaLENm+P+Tv+MfurjSw0=
+gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
+gopkg.in/yaml.v2 v2.2.4 h1:/eiJrUcujPVeJ3xlSWaiNi3uSVmDGBK1pDHUHAnao1I=
+gopkg.in/yaml.v2 v2.2.4/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
