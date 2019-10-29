@@ -21,9 +21,9 @@ func main() {
 	// fallback
 	yaml := `
 - path: /urlshort
-  url: https://github.com/gophercises/urlshort
-- path: /urlshort-final
-  url: https://github.com/gophercises/urlshort/tree/solution
+  url: https://github.com/Colafornia/golang-exercise/tree/master/urlshort
+- path: /urlshort-handler
+  url: https://github.com/Colafornia/golang-exercise/blob/master/urlshort/handler.go
 `
 	yamlHandler, err := urlshort.YAMLHandler([]byte(yaml), mapHandler)
 	if err != nil {
