@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"html/template"
 
+	"github.com/robfig/cron/v3"
 	"github.com/gocolly/colly"
 	"github.com/PuerkitoBio/goquery"
 	"gopkg.in/gomail.v2"
@@ -27,7 +28,7 @@ type fundInfo struct{
 var tpl *template.Template
 
 func init() {
-	tpl = template.Must(template.ParseFiles("email.gohtml"))
+	tpl = template.Must(template.ParseFiles("./fund-valueation-monitor/email.gohtml"))
 }
 
 func min(values []string) (min string, e error) {
@@ -106,11 +107,22 @@ func crawlFundInfo() fundInfo {
 }
 
 func main() {
-	info := crawlFundInfo()
+	c := cron.New()
+	fmt.Println("main")
+	emailName := os.Getenv("EMAIL_NAME")
+	emailPassword := os.Getenv("EMAIL_PASSWORD")
+	fmt.Println(emailName, emailPassword)
+	c.AddFunc("45 14 * * *", func() {
+		fmt.Println("Runs at 14:45 Shanghai time every day")
 
-	if info.CurrentVal < info.MinInHistory {
-		sendEmail(info)
-	} else {
-		fmt.Println("Larger than MinInHistory, not notify")
-	}
+		info := crawlFundInfo()
+
+		if info.CurrentVal > info.MinInHistory {
+			sendEmail(info)
+		} else {
+			fmt.Println("Larger than MinInHistory, not notify")
+		}
+	})
+	c.Start()
+	select{}
 }
