@@ -1,12 +1,10 @@
-FROM golang:alpine
-
-ENV GOLANGCI_LINT_VERSION=1.16.0
+FROM golang:1.13.3
 
 ENV GOPROXY="https://goproxy.io"
 
-ENV EMAIL_NAME=$value1 EMAIL_PASSWORD=$value2
+ENV TZ=Asia/Shanghai
 
-RUN echo "Asia/Shanghai" > /etc/timezone
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN mkdir /app
 

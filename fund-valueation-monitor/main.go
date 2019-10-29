@@ -109,9 +109,6 @@ func crawlFundInfo() fundInfo {
 func main() {
 	c := cron.New()
 	fmt.Println("main")
-	emailName := os.Getenv("EMAIL_NAME")
-	emailPassword := os.Getenv("EMAIL_PASSWORD")
-	fmt.Println(emailName, emailPassword)
 	c.AddFunc("45 14 * * *", func() {
 		fmt.Println("Runs at 14:45 Shanghai time every day")
 
