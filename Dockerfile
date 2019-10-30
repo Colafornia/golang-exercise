@@ -14,6 +14,6 @@ WORKDIR /app
 
 COPY . .
 
-RUN cd fund-valueation-monitor && go build -o main .
+RUN cd fund-valuation-monitor && go build -o main .
 
-CMD ["/app/fund-valueation-monitor/main"]
+CMD ["/app/fund-valuation-monitor/main"]

@@ -1,0 +1,17 @@
+name: Monitor fund valuation
+on:
+  schedule:
+    - cron: '45 6 * * 1-5'
+  push:
+    branches:
+      - master
+jobs:
+  monitor-fund:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Monitor fund valuation
+        uses: Colafornia/golang-exercise@master
+        env:
+          EMAIL_NAME: ${{ secrets.EMAIL_NAME }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
