@@ -1,12 +1,13 @@
 # golang-exercise
 
 [![Build Status](https://travis-ci.org/Colafornia/golang-exercise.svg?branch=master)](https://travis-ci.org/Colafornia/golang-exercise)
+[![Actions Status](https://github.com/Colafornia/golang-exercise/workflows/Monitor%20fund%20valuation/badge.svg)](https://github.com/Colafornia/golang-exercise/actions)
 
 ✌️ My Golang exercise collection
 
 ## 1. [fund-valuation-monitor](https://github.com/Colafornia/golang-exercise/tree/master/fund-valuation-monitor)
 
-Perform scheduled task scripts, crawler the net value of the fund on the day, if it is lower than the lowest value of nearly ten trading days, send an email notification
+Perform scheduled task scripts via `Github Actions`, crawler the net value of the fund on the day, if it is lower than the lowest value of nearly ten trading days, send an email notification
 
 ## 2. [urlshort](https://github.com/Colafornia/golang-exercise/tree/master/urlshort)
 
