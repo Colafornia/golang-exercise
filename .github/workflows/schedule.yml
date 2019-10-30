@@ -5,6 +5,8 @@ on:
   push:
     branches:
       - master
+    paths:
+        - 'fund-valuation-monitor/**'
 jobs:
   monitor-fund:
     runs-on: ubuntu-latest
