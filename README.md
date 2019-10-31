@@ -7,7 +7,7 @@
 
 ## 1. [fund-valuation-monitor](https://github.com/Colafornia/golang-exercise/tree/master/fund-valuation-monitor)
 
-`html-scraping` `gomail` `github-actions`
+`html-scraping` `html-template` `gomail` `github-actions`
 
 Perform scheduled task scripts via Github Actions, crawler the net value of the fund on the day, if it is lower than the lowest value of nearly ten trading days, send an email notification.
 
@@ -22,3 +22,9 @@ Create a simple server that will look at the path of any incoming web request an
 `channels` `goroutines` `flags`
 
 A command-line quiz program that supports reading csv file of questions, time limit, and whether shuffle the quiz order.
+
+## 4. [tcp-server](https://github.com/Colafornia/golang-exercise/tree/master/tcp-server)
+
+`TCP` `net` `flags`
+
+Just want to implement a tcp server myself. Nothing particular.
