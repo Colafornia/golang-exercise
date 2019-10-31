@@ -1,14 +1,14 @@
 package main
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
-	"os"
-	"bytes"
 	"html/template"
+	"os"
 
-	"github.com/gocolly/colly"
 	"github.com/PuerkitoBio/goquery"
+	"github.com/gocolly/colly"
 	"gopkg.in/gomail.v2"
 )
 
@@ -16,11 +16,11 @@ const (
 	fundHost = "http://fund.eastmoney.com/100032.html"
 )
 
-type fundInfo struct{
-	Name string
-	Time string
-	CurrentVal string
-	Rate string
+type fundInfo struct {
+	Name         string
+	Time         string
+	CurrentVal   string
+	Rate         string
 	MinInHistory string
 }
 
@@ -31,21 +31,21 @@ func init() {
 }
 
 func min(values []string) (min string, e error) {
-    if len(values) == 0 {
-        return "0", errors.New("Cannot detect a minimum value in an empty slice")
-    }
+	if len(values) == 0 {
+		return "0", errors.New("Cannot detect a minimum value in an empty slice")
+	}
 
-    min = values[0]
-    for _, v := range values {
-            if (v < min) {
-                min = v
-            }
-    }
+	min = values[0]
+	for _, v := range values {
+		if v < min {
+			min = v
+		}
+	}
 
-    return min, nil
+	return min, nil
 }
 
-func sendEmail(info fundInfo)  {
+func sendEmail(info fundInfo) {
 	var tplBytes bytes.Buffer
 	tpl.Execute(&tplBytes, info)
 	emailHtml := tplBytes.String()
@@ -88,10 +88,10 @@ func crawlFundInfo() fundInfo {
 		minVal, _ := min(history)
 
 		info = fundInfo{
-			Name: name,
-			Time: time,
-			CurrentVal: currentVal,
-			Rate: rate,
+			Name:         name,
+			Time:         time,
+			CurrentVal:   currentVal,
+			Rate:         rate,
 			MinInHistory: minVal,
 		}
 		fmt.Println(info)

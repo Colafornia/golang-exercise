@@ -1,18 +1,18 @@
 package main
 
 import (
+	"encoding/csv"
 	"flag"
 	"fmt"
-	"os"
 	"math/rand"
-	"time"
+	"os"
 	"strings"
-	"encoding/csv"
+	"time"
 )
 
 type problem struct {
 	question string
-	answer string
+	answer   string
 }
 
 func readCSV(csvFilePath string) ([][]string, error) {
@@ -20,12 +20,12 @@ func readCSV(csvFilePath string) ([][]string, error) {
 	f, err := os.Open(csvFilePath)
 	if err != nil {
 		return lines, err
-    }
-    defer f.Close()
+	}
+	defer f.Close()
 
 	lines, err = csv.NewReader(f).ReadAll()
-    if err != nil {
-        return lines, err
+	if err != nil {
+		return lines, err
 	}
 	return lines, nil
 }
@@ -35,7 +35,7 @@ func parseLines(lines [][]string) []problem {
 	for i, line := range lines {
 		problems[i] = problem{
 			question: line[0],
-			answer: strings.TrimSpace(line[1]),
+			answer:   strings.TrimSpace(line[1]),
 		}
 	}
 	return problems
@@ -62,9 +62,9 @@ func main() {
 	correct := 0
 	timer := time.NewTimer(time.Duration(*timeLimit) * time.Second)
 
-	problemloop:
+problemloop:
 	for index, problem := range problems {
-		fmt.Printf("Problem #%d: %s = \n", index + 1, problem.question)
+		fmt.Printf("Problem #%d: %s = \n", index+1, problem.question)
 
 		answerCh := make(chan string)
 		go func() {
