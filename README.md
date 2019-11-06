@@ -28,3 +28,9 @@ A command-line quiz program that supports reading csv file of questions, time li
 `TCP` `net` `flags`
 
 Just want to implement a tcp server myself. Nothing particular.
+
+## 5. [link-parser](https://github.com/Colafornia/golang-exercise/tree/master/link-parser)
+
+`recursion` `parsing-html` `io-reader`
+
+Build a package to parse links (\<a\> tags) recursively from an HTML file.
