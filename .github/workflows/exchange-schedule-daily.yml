@@ -1,4 +1,4 @@
-name: Monitor exchange rate
+name: Daily exchange rate
 on:
   schedule:
     - cron: '00 2 * * *'
@@ -8,7 +8,6 @@ on:
       - master
     paths:
         - 'exchange-rate-monitor/**'
-        - '.github/workflows/**'
 jobs:
   build:
     name: Build
