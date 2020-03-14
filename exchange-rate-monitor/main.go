@@ -90,7 +90,8 @@ func crawlrateInfo() rateInfo {
 func main() {
 	fmt.Println(os.Args)
 	info := crawlrateInfo()
-	if os.Args[1] == "push" || info.CurrentVal < 7.66 {
+	shouldPush := len(os.Args) > 1 && os.Args[1] == "push"
+	if shouldPush || info.CurrentVal < 7.66 {
 		sendRequest(info)
 	} else {
 		fmt.Println("Larger than 7.65, not notify")
