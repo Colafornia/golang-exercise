@@ -10,7 +10,7 @@ on:
         - 'exchange-rate-monitor/**'
         - '.github/workflows/**'
 jobs:
-   build:
+  build:
     name: Build
     runs-on: ubuntu-latest
     steps:
@@ -34,3 +34,5 @@ jobs:
 
     - name: Build
       run: go run ./exchange-rate-monitor/main.go push
+      env:
+        APP_TOKEN: ${{ secrets.APP_TOKEN }}
