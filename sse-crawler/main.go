@@ -76,7 +76,7 @@ func sendRequest(info updatedArticles) {
 func crawlrateInfo() updatedArticles {
 	c := colly.NewCollector()
 	var info updatedArticles
-	yesterday := time.Now().Add(-24 * 7 * time.Hour)
+	yesterday := time.Now().Add(-36 * time.Hour)
 	fmt.Println(yesterday)
 	c.OnHTML("body", func(e *colly.HTMLElement) {
 		var articles = make([]article, 0, 10)
