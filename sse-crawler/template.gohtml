@@ -6,14 +6,16 @@
 
 <body>
 <div id="container">
-    <p>{{.Time}} 更新: <a href="http://www.sse.com.cn/home/webupdate/">{{.Name}}</a></p>
-    <div id="content">
-        <ol>
-            {{range $i, $v := .Articles}}
-                <li style="margin-bottom: 10px;"><a href="{{$v.Link}}">{{$v.Time}}-{{$v.Title}}</a></li>
-            {{end}}
-        </ol>
-    </div>
+    {{range $i, $v := .}}
+        <p>{{$v.Time}} 更新: <a href="{{$v.Origin}}">{{$v.Name}}</a></p>
+        <div id="content">
+            <ol>
+                {{range $i, $v := .Articles}}
+                    <li style="margin-bottom: 10px;"><a href="{{$v.Link}}">{{$v.Time}}-{{$v.Title}}</a></li>
+                {{end}}
+            </ol>
+        </div>
+    {{end}}
 </div>
 </div>
 </body>

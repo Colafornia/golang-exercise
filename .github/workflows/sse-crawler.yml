@@ -2,7 +2,7 @@ name: SSE crawler
 
 on:
   schedule:
-    - cron: '45 0 * * *'
+    - cron: '45 23 * * *'
 
 jobs:
   build:
