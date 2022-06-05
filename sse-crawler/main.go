@@ -9,8 +9,11 @@ import (
 	"github.com/tidwall/gjson"
 	"html/template"
 	"io/ioutil"
+	"math/rand"
 	"net/http"
+	"net/url"
 	"os"
+	"strconv"
 	"sync"
 	"time"
 )
@@ -21,6 +24,8 @@ const (
 	ssePageLink   = "http://www.sse.com.cn/home/webupdate/"
 	nerisPageLink = "https://neris.csrc.gov.cn/falvfagui/"
 	nerisUrl      = "https://neris.csrc.gov.cn/falvfagui/rdqsHeader/informationController"
+	sezePageLink  = "http://www.szse.cn/lawrules/rule/new/"
+	szseUrl       = "http://www.szse.cn/api/search/content"
 )
 
 type article struct {
@@ -103,9 +108,6 @@ func crawlrateInfo() updatedArticles {
 					Link:  ssePrefix + link,
 				}
 				articles = append(articles, _article)
-				fmt.Println(selection.Find("span").Text())
-				fmt.Println(selection.Find("a").Text())
-				fmt.Println(ssePrefix + link)
 			}
 		})
 		info = updatedArticles{
@@ -130,6 +132,7 @@ func requestNerisInfo() updatedArticles {
 	if err != nil {
 		fmt.Println("Request Neris API Error")
 		fmt.Println(err)
+		return updatedArticles{}
 	}
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -158,6 +161,54 @@ func requestNerisInfo() updatedArticles {
 		Time:     time.Now().Format("2006-01-02"),
 		Articles: articles,
 	}
+	fmt.Println(info)
+	return info
+}
+
+func requesSzseInfo() updatedArticles {
+	random := rand.Float32()
+	s := fmt.Sprintf("%f", random)
+	APIURL := szseUrl + "?random=" + s
+	fmt.Println(APIURL)
+	v := url.Values{}
+	v.Set("keyword", "")
+	v.Set("range", "title")
+	v.Set("currentPage", "1")
+	v.Set("pageSize", "20")
+	v.Set("scope", "0")
+	v.Set("channelCode[]", "szserulesAllRulesBuss")
+	resp, err := http.PostForm(APIURL, v)
+	if err != nil {
+		fmt.Println("Request Neris API Error")
+		fmt.Println(err)
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println(err)
+	}
+	var articles = make([]article, 0, 10)
+	gjson.Get(string(body), "data").ForEach(func(key, value gjson.Result) bool {
+		msInt, _ := strconv.ParseInt(value.Get("docpubtime").String(), 10, 64)
+		updateDate := time.UnixMilli(msInt)
+		isAfterTimeLimit := updateDate.After(yesterday)
+		if isAfterTimeLimit {
+			_article := article{
+				Title: value.Get("doctitle").String(),
+				Time:  updateDate.Format("2006-01-02"),
+				Link:  value.Get("docpuburl").String(),
+			}
+			articles = append(articles, _article)
+			return true
+		}
+		return false
+	})
+	info := updatedArticles{
+		Origin:   sezePageLink,
+		Name:     "深圳证券交易所",
+		Time:     time.Now().Format("2006-01-02"),
+		Articles: articles,
+	}
+	fmt.Println(info)
 	return info
 }
 
@@ -167,11 +218,19 @@ func main() {
 	var info []updatedArticles
 	var nerisInfo updatedArticles
 	var sseInfo updatedArticles
-	wg.Add(2)
+	var seseInfo updatedArticles
+	wg.Add(3)
 	go func() {
 		nerisInfo = requestNerisInfo()
 		if len(nerisInfo.Articles) > 0 {
 			info = append(info, nerisInfo)
+		}
+		wg.Done()
+	}()
+	go func() {
+		seseInfo = requesSzseInfo()
+		if len(seseInfo.Articles) > 0 {
+			info = append(info, seseInfo)
 		}
 		wg.Done()
 	}()
@@ -183,8 +242,8 @@ func main() {
 		wg.Done()
 	}()
 	wg.Wait()
-	fmt.Println(nerisInfo, sseInfo)
-	if len(nerisInfo.Articles)+len(sseInfo.Articles) > 0 {
+	fmt.Println(info)
+	if len(info) > 0 {
 		sendRequest(info)
 	} else {
 		fmt.Println("No update, No notify")
