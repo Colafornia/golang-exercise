@@ -179,7 +179,7 @@ func requesSzseInfo() updatedArticles {
 	v.Set("channelCode[]", "szserulesAllRulesBuss")
 	resp, err := http.PostForm(APIURL, v)
 	if err != nil {
-		fmt.Println("Request Neris API Error")
+		fmt.Println("Request Neris API Error: ")
 		fmt.Println(err)
 	}
 	body, err := ioutil.ReadAll(resp.Body)
