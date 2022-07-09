@@ -20,12 +20,15 @@ import (
 
 const ssePrefix = "http://www.sse.com.cn"
 const nerisPrefix = "https://neris.csrc.gov.cn/falvfagui/rdqsHeader/mainbody?navbarId=1&secFutrsLawId="
+const cbircPrefix = "http://www.cbirc.gov.cn/cn/view/pages/ItemDetail.html?itemId=928&generaltype=0&docId="
 const (
 	ssePageLink   = "http://www.sse.com.cn/home/webupdate/"
 	nerisPageLink = "https://neris.csrc.gov.cn/falvfagui/"
 	nerisUrl      = "https://neris.csrc.gov.cn/falvfagui/rdqsHeader/informationController"
 	sezePageLink  = "http://www.szse.cn/lawrules/rule/new/"
 	szseUrl       = "http://www.szse.cn/api/search/content"
+	cbircPageLink = "http://www.cbirc.gov.cn/cn/view/pages/ItemList.html?itemPId=923&itemId=928&itemUrl=ItemListRightList.html&itemName=%E8%A7%84%E7%AB%A0%E5%8F%8A%E8%A7%84%E8%8C%83%E6%80%A7%E6%96%87%E4%BB%B6&itemsubPId=926"
+	cbircUrl      = "http://www.cbirc.gov.cn/cn/static/data/DocInfo/SelectDocByItemIdAndChild/data_itemId=928,pageIndex=1,pageSize=18.json"
 )
 
 type article struct {
@@ -212,6 +215,45 @@ func requesSzseInfo() updatedArticles {
 	return info
 }
 
+func requestCbircInfo() updatedArticles {
+	resp, err := http.Get(cbircUrl)
+	if err != nil {
+		fmt.Println("Request Cbirc API Error")
+		fmt.Println(err)
+		return updatedArticles{}
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println(err)
+	}
+	var articles = make([]article, 0, 10)
+	gjson.Get(string(body), "data.rows").ForEach(func(key, value gjson.Result) bool {
+		fmt.Println(value.Get("publishDate").String())
+		updateDate, _ := time.Parse("2006-01-02 15:04:05", value.Get("publishDate").String())
+		isAfterTimeLimit := updateDate.After(yesterday)
+		if isAfterTimeLimit {
+			link := cbircPrefix + value.Get("docId").String()
+			_article := article{
+				Title: value.Get("docTitle").String(),
+				Time:  updateDate.Format("2006-01-02"),
+				Link:  link,
+			}
+			articles = append(articles, _article)
+			return true
+		}
+		return false
+	})
+	fmt.Println(articles)
+	info := updatedArticles{
+		Origin:   cbircPageLink,
+		Name:     "银保监",
+		Time:     time.Now().Format("2006-01-02"),
+		Articles: articles,
+	}
+	fmt.Println(info)
+	return info
+}
+
 func main() {
 	fmt.Println(os.Args)
 	var wg sync.WaitGroup
@@ -219,6 +261,7 @@ func main() {
 	var nerisInfo updatedArticles
 	var sseInfo updatedArticles
 	var seseInfo updatedArticles
+	var cbircInfo updatedArticles
 	wg.Add(3)
 	go func() {
 		nerisInfo = requestNerisInfo()
@@ -238,6 +281,13 @@ func main() {
 		sseInfo = crawlrateInfo()
 		if len(sseInfo.Articles) > 0 {
 			info = append(info, sseInfo)
+		}
+		wg.Done()
+	}()
+	go func() {
+		cbircInfo = requestCbircInfo()
+		if len(cbircInfo.Articles) > 0 {
+			info = append(info, cbircInfo)
 		}
 		wg.Done()
 	}()
