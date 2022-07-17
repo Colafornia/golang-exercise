@@ -46,7 +46,7 @@ type updatedArticles struct {
 
 var tpl *template.Template
 
-var yesterday = time.Now().Add(-36 * time.Hour)
+var yesterday = time.Now().AddDate(0, 0, -1)
 
 func init() {
 	time.LoadLocation("Asia/Shanghai")
@@ -262,7 +262,7 @@ func main() {
 	var sseInfo updatedArticles
 	var seseInfo updatedArticles
 	var cbircInfo updatedArticles
-	wg.Add(3)
+	wg.Add(4)
 	go func() {
 		nerisInfo = requestNerisInfo()
 		if len(nerisInfo.Articles) > 0 {

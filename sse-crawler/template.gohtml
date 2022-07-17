@@ -7,7 +7,7 @@
 <body>
 <div id="container">
     {{range $i, $v := .}}
-        <p>{{$v.Time}} 更新: <a href="{{$v.Origin}}">{{$v.Name}}</a></p>
+        <p>{{$v.Time}} 推送更新: <a href="{{$v.Origin}}">{{$v.Name}}</a></p>
         <div id="content">
             <ol>
                 {{range $i, $v := .Articles}}
